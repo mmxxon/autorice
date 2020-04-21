@@ -2,6 +2,7 @@
 ,xorg-server,"is the graphical server."
 ,xorg-xwininfo,"allows querying information about windows."
 ,xorg-xinit,"starts the graphical server."
+,xorg-xinput,"Input settings"
 V,xorg-minimal,"is the graphical server."
 V,xorg-fonts,"is a font package."
 V,xinit,"starts the graphical server."
@@ -79,3 +80,4 @@ G,https://github.com/xon-dev/st.git,"is my custom build of suckless's terminal e
 A,mutt-wizard-git,"is a light-weight terminal-based email system."
 ,slock,"allows you to lock your computer, and quickly unlock with your password."
 A,wal-git,"tool that can set wallpaper and make color scheme depending on it"
+A,otf-code-new-roman,"Good monospaced font"
