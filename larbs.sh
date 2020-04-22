@@ -223,6 +223,14 @@ yes | sudo -u "$name" $aurhelper -S libxft-bgra >/dev/null 2>&1
 putgitrepo "$dotfilesrepo" "/home/$name" "$repobranch"
 rm -f "/home/$name/README.md" "/home/$name/LICENSE"
 
+# Creating files directories
+mkdir -p \
+"/home/$name/Folders/work" \
+"/home/$name/Folders/torrents" \
+"/home/$name/Folders/pics" \
+"/home/$name/Folders/music" \
+"/home/$name/Folders/sources" \
+
 # Most important command! Get rid of the beep!
 systembeepoff
 
