@@ -229,7 +229,10 @@ mkdir -p \
 "/home/$name/Folders/torrents" \
 "/home/$name/Folders/pics" \
 "/home/$name/Folders/music" \
-"/home/$name/Folders/sources" \
+"/home/$name/Folders/sources"
+
+# Change owner of directories
+chown -hR xon ~/Folders
 
 # Most important command! Get rid of the beep!
 systembeepoff
