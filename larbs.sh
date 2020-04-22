@@ -227,10 +227,11 @@ rm -f "/home/$name/README.md" "/home/$name/LICENSE"
 mkdir -p \
 "/home/$name/Folders/work" \
 "/home/$name/Folders/torrents" \
-"/home/$name/Folders/pics" \
+"/home/$name/Folders/pics/" \
 "/home/$name/Folders/music" \
 "/home/$name/Folders/sources"
 
+mv "/home/$name/.config/wallpapers" "/home/$name/Folders/pics"
 # Change owner of directories
 chown -hR $name:wheel /home/$name/Folders
 
