@@ -232,7 +232,7 @@ mkdir -p \
 "/home/$name/Folders/sources"
 
 # Change owner of directories
-chown -hR $name:wheel ~/Folders
+chown -hR $name:wheel /home/$name/Folders
 
 # Most important command! Get rid of the beep!
 systembeepoff
