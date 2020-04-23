@@ -225,7 +225,7 @@ rm -f "/home/$name/README.md" "/home/$name/LICENSE"
 mkdir -p \
 "/home/$name/Folders/work" \
 "/home/$name/Folders/pics/" \
-"/home/$name/Folders/music" \
+"/home/$name/Folders/music/plists" \
 "/home/$name/Folders/dloads/torrents" \
 "/home/$name/Folders/docs" \
 "/home/$name/Folders/sources" \
