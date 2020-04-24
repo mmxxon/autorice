@@ -232,6 +232,7 @@ mkdir -p \
 "/home/$name/Folders/vids" \
 
 mv "/home/$name/.config/wallpapers" "/home/$name/Folders/pics"
+mv "/home/$name/.config/icons" "/home/$name/Folders/pics"
 # Change owner of directories
 chown -hR $name:wheel /home/$name/Folders
 
