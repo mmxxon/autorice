@@ -229,6 +229,7 @@ mkdir -p \
 "/home/$name/Folders/dloads/torrents" \
 "/home/$name/Folders/docs" \
 "/home/$name/Folders/sources" \
+"/home/$name/Folders/vids" \
 
 mv "/home/$name/.config/wallpapers" "/home/$name/Folders/pics"
 # Change owner of directories
