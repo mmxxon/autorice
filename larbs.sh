@@ -71,7 +71,7 @@ adduserandpass() { \
 	dialog --infobox "Adding user \"$name\"..." 4 50
 	useradd -m -g wheel -s /bin/bash "$name" >/dev/null 2>&1 ||
 	usermod -a -G wheel "$name" && mkdir -p /home/"$name" && chown "$name":wheel /home/"$name"
-	repodir="/home/$name/.local/src"; mkdir -p "$repodir"; chown -R "$name":wheel $(dirname "$repodir")
+	repodir="/home/$name/.local/src"; mkdir -p "$repodir"; chown -R "$name":wheel "$(dirname "$repodir")"
 	echo "$name:$pass1" | chpasswd
 	unset pass1 pass2 ;}
 
@@ -234,7 +234,7 @@ mkdir -p \
 mv "/home/$name/.config/wallpapers" "/home/$name/Folders/pics"
 mv "/home/$name/.config/icons" "/home/$name/Folders/pics"
 # Change owner of directories
-chown -hR $name:wheel /home/$name/Folders
+chown -hR "$name:wheel" "/home/$name/Folders"
 
 # Most important command! Get rid of the beep!
 systembeepoff
