@@ -238,10 +238,10 @@ wget -qO- 'https://gitlab.freedesktop.org/xorg/lib/libxft/merge_requests/1.patch
 make >/dev/null 2>&1
 make install >/dev/null 2>&1
 cd /tmp
-rm -rf "/home/$user/.git"
 putgitrepo "$dotfilesrepo" "/home/$name" "$repobranch"
 sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/Pictures/Wallpapers"
 sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/Pictures/Icons"
+rm -rf "/home/$user/.git"
 rm -f "/home/$name/README.md" "/home/$name/LICENSE"
 # make git ignore deleted LICENSE & README.md files
 git update-index --assume-unchanged "/home/$name/README.md"
