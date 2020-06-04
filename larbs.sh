@@ -223,13 +223,14 @@ dialog --title "LARBS Installation" --infobox "Finally, installing \`libxft-bgra
 #yes | sudo -u "$name" $aurhelper -S libxft-bgra >/dev/null 2>&1
 ######################
 dialog --title "LARBS Installation" --infobox "Installing \`$progname\` ($n of $total) via \`git\` and \`make\`. $(basename "$1") $2" 5 70
-git clone https://gitlab.freedesktop.org/xorg/lib/libxft.git libxft >/dev/null 2>&1 || { cd libxft || return }
+git clone https://gitlab.freedesktop.org/xorg/lib/libxft.git libxft >/dev/null 2>&1
+cd libxft
 wget -qO- 'https://gitlab.freedesktop.org/xorg/lib/libxft/merge_requests/1.patch' | patch -p1
 ./autoconf.sh
 ./configure --prefix=/usr --sysconfdir=/etc --disable-static
 make >/dev/null 2>&1
 make install >/dev/null 2>&1
-cd /tmp || return ;}
+cd /tmp
 
 
 # Creating files directories
