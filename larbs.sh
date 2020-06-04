@@ -226,7 +226,7 @@ dialog --title "LARBS Installation" --infobox "Installing \`$progname\` ($n of $
 git clone https://gitlab.freedesktop.org/xorg/lib/libxft.git libxft >/dev/null 2>&1
 cd libxft
 wget -qO- 'https://gitlab.freedesktop.org/xorg/lib/libxft/merge_requests/1.patch' | patch -p1
-./autoconf.sh
+./autogen.sh
 ./configure --prefix=/usr --sysconfdir=/etc --disable-static
 make >/dev/null 2>&1
 make install >/dev/null 2>&1
