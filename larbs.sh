@@ -241,11 +241,7 @@ cd /tmp
 putgitrepo "$dotfilesrepo" "/home/$name" "$repobranch"
 sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/Pictures/Wallpapers"
 sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/Pictures/Icons"
-rm -rf "/home/$user/.git"
-rm -f "/home/$name/README.md" "/home/$name/LICENSE"
-# make git ignore deleted LICENSE & README.md files
-git update-index --assume-unchanged "/home/$name/README.md"
-git update-index --assume-unchanged "/home/$name/LICENSE"
+rm -rf "/home/$user/.git" "/home/$name/README.md" "/home/$name/LICENSE"
 
 # Most important command! Get rid of the beep!
 systembeepoff
