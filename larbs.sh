@@ -77,6 +77,7 @@ adduserandpass() { \
 						/home/"$name"/Pictures \
 						/home/"$name"/Music/Playlists \
 						/home/"$name"/Downloads/Torrents \
+						/home/"$name"/Downloads/Browser \
 						/home/"$name"/Docs \
 						/home/"$name"/Src \
 						/home/"$name"/Work && chown -R "$name":wheel /home/"$name"
