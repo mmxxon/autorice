@@ -73,14 +73,14 @@ adduserandpass() { \
 	dialog --infobox "Adding user \"$name\"..." 4 50
 	useradd -m -g wheel -s /bin/bash "$name" >/dev/null 2>&1 ||
 	usermod -a -G wheel "$name" && mkdir -p /home/"$name" \
-						/home/"$name"/Videos \
-						/home/"$name"/Pictures \
-						/home/"$name"/Music/Playlists \
-						/home/"$name"/Downloads/Torrents \
-						/home/"$name"/Downloads/Browser \
-						/home/"$name"/Docs \
-						/home/"$name"/Src \
-						/home/"$name"/Work && chown -R "$name":wheel /home/"$name"
+						/home/"$name"/vids \
+						/home/"$name"/pics \
+						/home/"$name"/music/plists \
+						/home/"$name"/dloads/tors \
+						/home/"$name"/dloads/browser \
+						/home/"$name"/docs \
+						/home/"$name"/src \
+						/home/"$name"/work && chown -R "$name":wheel /home/"$name"
 	repodir="/home/$name/.local/src"; mkdir -p "$repodir"; chown -R "$name":wheel $(dirname "$repodir")
 	echo "$name:$pass1" | chpasswd
 	unset pass1 pass2 ;}
@@ -235,8 +235,8 @@ make >/dev/null 2>&1
 make install >/dev/null 2>&1
 cd /tmp
 putgitrepo "$dotfilesrepo" "/home/$name" "$repobranch"
-sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/Pictures/Wallpapers"
-sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/Pictures/Icons"
+sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/pics/walls"
+sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/pics/icons"
 rm -rf "/home/$user/.git" "/home/$name/README.md" "/home/$name/LICENSE"
 
 # Most important command! Get rid of the beep!
