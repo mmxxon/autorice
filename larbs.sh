@@ -3,8 +3,7 @@
 # by Luke Smith <luke@lukesmith.xyz>
 # License: GNU GPLv3
 
-### OPTIONS AND VARIABLES ###
-
+# Opions handling
 while getopts ":a:r:b:p:h" o; do case "${o}" in
 	h) printf "Optional arguments for custom use:\\n  -r: Dotfiles repository (local file or url)\\n  -p: Dependencies and programs csv (local file or url)\\n  -a: AUR helper (must have pacman-like syntax)\\n  -h: Show this message\\n" && exit ;;
 	r) dotfilesrepo=${OPTARG} && git ls-remote "$dotfilesrepo" || exit ;;
@@ -14,24 +13,18 @@ while getopts ":a:r:b:p:h" o; do case "${o}" in
 	*) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
 esac done
 
-[ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/xon-dev/voidrice.git"
-[ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/xon-dev/larbs/master/progs.csv"
+# Prepare variables
+[ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/xon-dev/rice.git"
+[ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/xon-dev/autorice/master/apps.csv"
 [ -z "$aurhelper" ] && aurhelper="yay"
 [ -z "$repobranch" ] && repobranch="master"
 
 ### FUNCTIONS ###
 
-if type xbps-install >/dev/null 2>&1; then
-	installpkg(){ xbps-install -y "$1" >/dev/null 2>&1 ;}
-	grepseq="\"^[PGV]*,\""
-elif type apt >/dev/null 2>&1; then
-	installpkg(){ apt-get install -y "$1" >/dev/null 2>&1 ;}
-	grepseq="\"^[PGU]*,\""
-else
-	distro="arch"
-	installpkg(){ pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
-	grepseq="\"^[PGA]*,\""
-fi
+distro="arch"
+grepseq="\"^[PGA]*,\""
+
+installpkg(){ pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 
 error() { clear; printf "ERROR:\\n%s\\n" "$1"; exit;}
 
@@ -39,10 +32,6 @@ welcomemsg() { \
 	dialog --title "Welcome!" --msgbox "Welcome to Luke's Auto-Rice Bootstrapping Script!\\n\\nThis script will automatically install a fully-featured Linux desktop, which I use as my main machine.\\n\\n-Luke" 10 60
 
 	dialog --colors --title "Important Note!" --yes-label "All ready!" --no-label "Return..." --yesno "Be sure the computer you are using has current pacman updates and refreshed Arch keyrings.\\n\\nIf it does not, the installation of some programs might fail." 8 70
-	}
-
-selectdotfiles() { \
-	edition="$(dialog --title "Select LARBS version." --menu "Select which version of LARBS you wish to have as default:" 10 70 2 dwm "The version of LARBS using suckless's dwm." i3 "The classic version of LARBS using i3." custom "If you are supplying commandline options for LARBS." 3>&1 1>&2 2>&3 3>&1)" || error "User exited."
 	}
 
 getuserandpass() { \
@@ -157,6 +146,12 @@ putgitrepo() { # Downloads a gitrepo $1 and places the files in $2 only overwrit
 	sudo -u "$name" cp -rfT "$dir" "$2"
 	}
 
+additional() {
+	sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/pics/walls"
+	sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/pics/icons"
+	mv /home/xon/.local/bin/additional/statusbar.hook /usr/share/libalpm/hooks/statusbar.hook
+	}
+
 systembeepoff() { dialog --infobox "Getting rid of that retarded error beep sound..." 10 50
 	rmmod pcspkr
 	echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf ;}
@@ -169,9 +164,8 @@ systembeepoff() { dialog --infobox "Getting rid of that retarded error beep soun
 # Check if user is root on Arch distro. Install dialog.
 installpkg dialog || error "Are you sure you're running this as the root user and have an internet connection?"
 
-# Welcome user and pick dotfiles.
+# Welcome user.
 welcomemsg || error "User exited."
-selectdotfiles || error "User exited."
 
 # Get and verify username and password.
 getuserandpass || error "User exited."
@@ -235,8 +229,7 @@ make >/dev/null 2>&1
 make install >/dev/null 2>&1
 cd /tmp
 putgitrepo "$dotfilesrepo" "/home/$name" "$repobranch"
-sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/pics/walls"
-sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/pics/icons"
+additional
 rm -rf "/home/$user/.git" "/home/$name/README.md" "/home/$name/LICENSE"
 
 # Most important command! Get rid of the beep!

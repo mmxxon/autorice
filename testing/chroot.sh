@@ -1,5 +1,3 @@
-#Potential variables: timezone, lang and local
-
 passwd
 
 TZuser=$(cat tzfinal.tmp)
