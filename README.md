@@ -1,1 +1,1 @@
-# Fork of Luke Smith's bootstraping script
+# Fork of [Luke Smith's](https://github.com/lukesmithxyz) bootstraping script
