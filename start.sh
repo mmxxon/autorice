@@ -5,24 +5,23 @@
 
 # Opions handling
 while getopts ":a:r:b:p:h" o; do case "${o}" in
-	h) printf "Optional arguments for custom use:\\n  -r: Dotfiles repository (local file or url)\\n  -p: Dependencies and programs csv (local file or url)\\n  -a: AUR helper (must have pacman-like syntax)\\n  -h: Show this message\\n" && exit ;;
-	r) dotfilesrepo=${OPTARG} && git ls-remote "$dotfilesrepo" || exit ;;
-	b) repobranch=${OPTARG} ;;
-	p) progsfile=${OPTARG} ;;
-	a) aurhelper=${OPTARG} ;;
+	h) printf "[-d dotfiles ] [-c csv ] [-a AUR helper ] [ -h this message ] \\n" && exit ;;
+	d) dotfiles=${OPTARG} && git ls-remote "$dotfiles" || exit ;;
+	b) branch=${OPTARG} ;;
+	c) csv=${OPTARG} ;;
+	a) helper=${OPTARG} ;;
 	*) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
 esac done
 
 # Prepare variables
-[ -z "$dotfilesrepo" ] && dotfilesrepo="https://github.com/xon-dev/rice.git"
-[ -z "$progsfile" ] && progsfile="https://raw.githubusercontent.com/xon-dev/autorice/master/apps.csv"
-[ -z "$aurhelper" ] && aurhelper="yay"
+[ -z "$dotfiles" ] && dotfiles="https://github.com/xon-dev/rice.git"
+[ -z "$csv" ] && csv="https://raw.githubusercontent.com/xon-dev/autorice/master/apps.csv"
+[ -z "$helper" ] && helper="yay"
 [ -z "$repobranch" ] && repobranch="master"
 
 distro="arch"
 grepseq="\"^[PGA]*,\""
 
-# Functions
 installpkg(){ pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
 
 error() { clear; printf "ERROR:\\n%s\\n" "$1"; exit;}
@@ -115,7 +114,7 @@ gitmakeinstall() {
 aurinstall() { \
 	dialog --title "LARBS Installation" --infobox "Installing \`$1\` ($n of $total) from the AUR. $1 $2" 5 70
 	echo "$aurinstalled" | grep "^$1$" >/dev/null 2>&1 && return
-	sudo -u "$name" $aurhelper -S --noconfirm "$1" >/dev/null 2>&1
+	sudo -u "$name" $helper -S --noconfirm "$1" >/dev/null 2>&1
 }
 
 pipinstall() { \
@@ -125,7 +124,7 @@ pipinstall() { \
 }
 
 installationloop() { \
-	([ -f "$progsfile" ] && cp "$progsfile" /tmp/progs.csv) || curl -Ls "$progsfile" | sed '/^#/d' | eval grep "$grepseq" > /tmp/progs.csv
+	([ -f "$csv" ] && cp "$csv" /tmp/progs.csv) || curl -Ls "$csv" | sed '/^#/d' | eval grep "$grepseq" > /tmp/progs.csv
 	total=$(wc -l < /tmp/progs.csv)
 	aurinstalled=$(pacman -Qqm)
 	while IFS=, read -r tag program comment; do
@@ -154,6 +153,10 @@ additional() {
 	sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/pics/walls"
 	sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/pics/icons"
 	mv /home/xon/.local/bin/additional/statusbar.hook /usr/share/libalpm/hooks/statusbar.hook
+	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/pacwall.sh -O /usr/bin/pacwall
+	chmod /usr/bin/pacwall
+	sed -i "s/\/home\/xon/\/home\/$user/" /usr/bin/pacwall
+	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/90-pacwall.hook -O /usr/share/libalpm/hooks/
 }
 
 systembeepoff() { dialog --infobox "Getting rid of that retarded error beep sound..." 10 50
@@ -192,12 +195,12 @@ grep "ILoveCandy" /etc/pacman.conf >/dev/null || sed -i "/#VerbosePkgLists/a ILo
 # Use all cores for compilation.
 sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
 
-manualinstall $aurhelper || error "Failed to install AUR helper."
+manualinstall $helper || error "Failed to install AUR helper."
 
 installationloop
 
 dialog --title "LARBS Installation" --infobox "Finally, installing \`libxft-bgra\` to enable color emoji in suckless software without crashes." 5 70
-#yes | sudo -u "$name" $aurhelper -S libxft-bgra >/dev/null 2>&1
+#yes | sudo -u "$name" $helper -S libxft-bgra >/dev/null 2>&1
 
 #?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?
 git clone https://gitlab.freedesktop.org/xorg/lib/libxft.git libxft >/dev/null 2>&1
@@ -210,7 +213,11 @@ make install >/dev/null 2>&1
 cd /tmp
 #?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?
 
-putgitrepo "$dotfilesrepo" "/home/$name" "$repobranch"
+putgitrepo "$dotfiles" "/home/$name" "$repobranch"
+
+# wallpaper
+#
+
 additional
 rm -rf "/home/$user/.git" "/home/$name/README.md" "/home/$name/LICENSE"
 
