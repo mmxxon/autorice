@@ -154,10 +154,8 @@ additional() {
 	sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/pics/icons"
 	mv /home/xon/.local/bin/additional/statusbar.hook /usr/share/libalpm/hooks/statusbar.hook
 	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/pacwall.sh -O /usr/bin/pacwall &> /dev/null
-	sed -i "s/\/home\/xon/\/home\/$(user)/" /usr/bin/pacwall
 	chmod +x /usr/bin/pacwall
 	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/90-pacwall.hook -O /usr/share/libalpm/hooks/ &> /dev/null
-	sed -i "s/\/home\/xon/\/home\/$(user)/" /usr/share/libalpm/hooks/90-pacwall.hook
 }
 
 systembeepoff() { dialog --infobox "Getting rid of that retarded error beep sound..." 10 50
