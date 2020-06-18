@@ -156,7 +156,7 @@ additional() {
 	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/pacwall.sh -O /usr/bin/pacwall &> /dev/null
 	sed -i "s/\/home\/xon/\/home\/$name/" /usr/bin/pacwall
 	chmod +x /usr/bin/pacwall
-	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/90-pacwall.hook -O /usr/share/libalpm/hooks/ &> /dev/null
+	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/90-pacwall.hook -O /usr/share/libalpm/hooks/90-pacwall.hook &> /dev/null
 	sed -i "s/\/home\/xon/\/home\/$name/" /usr/share/libalpm/hooks/90-pacwall.hook
 }
 
