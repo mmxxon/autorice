@@ -153,10 +153,10 @@ additional() {
 	sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/pics/walls"
 	sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/pics/icons"
 	mv /home/xon/.local/bin/additional/statusbar.hook /usr/share/libalpm/hooks/statusbar.hook
-	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/pacwall.sh -O /usr/bin/pacwall
-	chmod /usr/bin/pacwall
+	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/pacwall.sh -O /usr/bin/pacwall &> /dev/null
+	chmod +x /usr/bin/pacwall
 	sed -i "s/\/home\/xon/\/home\/$user/" /usr/bin/pacwall
-	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/90-pacwall.hook -O /usr/share/libalpm/hooks/
+	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/90-pacwall.hook -O /usr/share/libalpm/hooks/ &> /dev/null
 }
 
 systembeepoff() { dialog --infobox "Getting rid of that retarded error beep sound..." 10 50
@@ -214,9 +214,6 @@ cd /tmp
 #?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?
 
 putgitrepo "$dotfiles" "/home/$name" "$repobranch"
-
-# wallpaper
-#
 
 additional
 rm -rf "/home/$user/.git" "/home/$name/README.md" "/home/$name/LICENSE"
