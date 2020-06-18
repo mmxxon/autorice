@@ -103,3 +103,4 @@ A,kotatogram-desktop-dynamic-bin,"is telegram client.",
 A,hsetroot,"is tool to change default grey bg.",
 A,epy-git,"is book reading software.",
 ,xdg-user-dirs,"is tool that used to handle default user directories.",
+,graphviz,"is needed to generate background"
