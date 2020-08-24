@@ -34,25 +34,24 @@ welcomemsg() { \
 
 getuserandpass() { \
 	name=''
-	read -p 'Account name: ' name -r
+	read -p 'Account name: ' name
 	while ! echo "$name" | grep "^[a-z_][a-z0-9_-]*$" >/dev/null 2>&1; do
-		read -p 'Not valid username: ' name -r
+		read -p 'Not valid username: ' name
 	done
 	pass1=''; pass2=''
-	read -p 'Password:' -sr
-	read -p 'Retype:' -sr
+	read -p "Password:" -s pass1; echo
+	read -p "Retype:" -s pass2; echo
 	while ! [ "$pass1" = "$pass2" ]; do
 		unset pass2
 		echo 'Passwords not match'
-		read -p 'Password:' -sr
-		read -p 'Retype:' -sr
+		read -p "Password:" -s pass1; echo
+		read -p "Retype:" -s pass2; echo
 	done
 }
 
 usercheck() { \
-	! (id -u "$name" >/dev/null) 2>&1 ||
-	{ read -p 'Warning! User exists in system. Continue?' -r
-	read -p "Continue? y/N" -n 1 -r
+	! (id -u "$name" &>/dev/null) ||
+	{ read -p 'Warning! User exists in system. Continue?' -n 1 -r
 	echo
 	if [[ ! $REPLY =~ ^[Yy]$ ]]
 	then
@@ -191,13 +190,13 @@ adduserandpass    || error "Error adding username and/or password."
 refreshkeys       || error "Error automatically refreshing Arch keyring. Consider doing so manually."
 
 echo "Preparing install."
-installpkg curl
-installpkg base-devel
-installpkg git
-installpkg ntp
+installpkg curl   || error "Exited on curl"
+installpkg base-devel   || error "Exited on base-devel"
+installpkg git   || error "Exited on git"
+installpkg ntp   || error "Exited on ntp"
 
 echo "Synchronizing system time to ensure successful and secure installation of software..."
-ntpdate 0.us.pool.ntp.org >/dev/null 2>&1
+ntpdate 0.us.pool.ntp.org &>/dev/null 
 
 [ -f /etc/sudoers.pacnew ] && cp /etc/sudoers.pacnew /etc/sudoers
 newperms "%wheel ALL=(ALL) NOPASSWD: ALL"
