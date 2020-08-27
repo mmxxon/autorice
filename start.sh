@@ -11,18 +11,18 @@ esac done
 
 # Prepare variables
 [ -z "$dotfiles" ] && dotfiles="https://github.com/xon-dev/rice.git"
-[ -z "$csv" ] && csv="https://raw.githubusercontent.com/xon-dev/autorice/master/apps.csv"
+[ -z "$csv" ] && csv="https://raw.githubusercontent.com/xon-dev/autorice/test/apps.csv"
 [ -z "$helper" ] && helper="yay"
 [ -z "$repobranch" ] && repobranch="master"
 
 distro="arch"
 grepseq="\"^[PGA]*,\""
 
-installpkg(){ pacman --noconfirm --needed -S "$1" >/dev/null 2>&1 ;}
+installpkg() { pacman --noconfirm --needed -S "$1" &>/dev/null; }
 
-error() { clear; printf "ERROR:\\n%s\\n" "$1"; exit;}
+error() { clear; printf "ERROR:\\n%s\\n" "$1"; exit; }
 
-welcomemsg() { \
+welcomemsg() {
 	read -p "Welcome to installation script" -r
 	read -p "Continue? y/N" -n 1 -r
 	echo
@@ -32,24 +32,24 @@ welcomemsg() { \
 	fi
 }
 
-getuserandpass() { \
+getuserandpass() {
 	name=''
-	read -p 'Account name: ' name
-	while ! echo "$name" | grep "^[a-z_][a-z0-9_-]*$" >/dev/null 2>&1; do
-		read -p 'Not valid username: ' name
+	read -p "Account name: " name -r
+	while ! echo "$name" | grep "^[a-z_][a-z0-9_-]*$" &> /dev/null; do
+		read -p "Not valid username: " name -r
 	done
 	pass1=''; pass2=''
-	read -p "Password:" -s pass1; echo
-	read -p "Retype:" -s pass2; echo
+	read -p "Password:" -s pass1 -r; echo
+	read -p "Retype:" -s pass2 -r; echo
 	while ! [ "$pass1" = "$pass2" ]; do
 		unset pass2
 		echo 'Passwords not match'
-		read -p "Password:" -s pass1; echo
-		read -p "Retype:" -s pass2; echo
+		read -p "Password:" -s pass1 -r; echo
+		read -p "Retype:" -s pass2 -r; echo
 	done
 }
 
-usercheck() { \
+usercheck() {
 	! (id -u "$name" &>/dev/null) ||
 	{ read -p 'Warning! User exists in system. Continue?' -n 1 -r
 	echo
@@ -60,7 +60,7 @@ usercheck() { \
 	fi; }
 }
 
-preinstallmsg() { \
+preinstallmsg() {
 	read -p "Start installation? y/N" -n 1 -r
 	echo
 	if [[ ! $REPLY =~ ^[Yy]$ ]]
@@ -70,10 +70,10 @@ preinstallmsg() { \
 	fi
 }
 
-adduserandpass() { \
+adduserandpass() {
 	# Adds user `$name` with password $pass1.
 	echo "Adding user \"$name\"..."
-	useradd -m -g wheel -s /bin/bash "$name" >/dev/null 2>&1 ||
+	useradd -m -g wheel -s /bin/bash "$name" &> /dev/null ||
 	usermod -a -G wheel "$name" && mkdir -p /home/"$name" \
 						/home/"$name"/vids \
 						/home/"$name"/pics \
@@ -88,26 +88,26 @@ adduserandpass() { \
 	unset pass1 pass2
 }
 
-refreshkeys() { \
+refreshkeys() {
 	echo "Refreshing Keyring"
-	pacman --noconfirm -Sy archlinux-keyring >/dev/null 2>&1
+	pacman --noconfirm -Sy archlinux-keyring &> /dev/null
 }
 
-newperms() { # Set special sudoers settings for install (or after).
+newperms() {
 	sed -i "/#XON/d" /etc/sudoers
 	echo "$* #XON" >> /etc/sudoers ;
 }
 
-manualinstall() { # Installs $1 manually if not installed. Used only for AUR helper here.
+manualinstall() {
 	[ -f "/usr/bin/$1" ] || (
 	echo "Installing \"$1\", an AUR helper..."
 	cd /tmp || exit
 	rm -rf /tmp/"$1"*
 	curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
-	sudo -u "$name" tar -xvf "$1".tar.gz >/dev/null 2>&1 &&
+	sudo -u "$name" tar -xvf "$1".tar.gz &>/dev/null &&
 	cd "$1" &&
-	sudo -u "$name" makepkg --noconfirm -si >/dev/null 2>&1
-	cd /tmp || return) ;
+	sudo -u "$name" makepkg --noconfirm -si &>/dev/null
+	cd /tmp || return);
 }
 
 maininstall() {
@@ -119,22 +119,22 @@ gitmakeinstall() {
 	progname="$(basename "$1" .git)"
 	dir="$repodir/$progname"
 	echo "Installing \`$progname\` ($n of $total) via \`git\` and \`make\`. $(basename "$1") $2"
-	sudo -u "$name" git clone --depth 1 "$1" "$dir" >/dev/null 2>&1 || { cd "$dir" || return ; sudo -u "$name" git pull --force origin master;}
+	sudo -u "$name" git clone --depth 1 "$1" "$dir" &> /dev/null || { cd "$dir" || return ; sudo -u "$name" git pull --force origin master;}
 	cd "$dir" || exit
-	make >/dev/null 2>&1
-	make install >/dev/null 2>&1
+	make &> /dev/null
+	make install &> /dev/null
 	cd /tmp || return ;
 }
 
 aurinstall() { \
 	echo "Installing \`$1\` ($n of $total) from the AUR. $1 $2"
-	echo "$aurinstalled" | grep "^$1$" >/dev/null 2>&1 && return
-	sudo -u "$name" $helper -S --noconfirm "$1" >/dev/null 2>&1
+	echo "$aurinstalled" | grep "^$1$" &> /dev/null && return
+	sudo -u "$name" $helper -S --noconfirm "$1" &> /dev/null
 }
 
 pipinstall() { \
 	echo "Installing the Python package \`$1\` ($n of $total). $1 $2"
-	command -v pip || installpkg python-pip >/dev/null 2>&1
+	command -v pip || installpkg python-pip &> /dev/null
 	yes | pip install "$1"
 }
 
@@ -144,7 +144,7 @@ installationloop() { \
 	aurinstalled=$(pacman -Qqm)
 	while IFS=, read -r tag program comment; do
 		n=$((n+1))
-		echo "$comment" | grep "^\".*\"$" >/dev/null 2>&1 && comment="$(echo "$comment" | sed "s/\(^\"\|\"$\)//g")"
+		echo "$comment" | grep "^\".*\"$" &> /dev/null && comment="$(echo "$comment" | sed "s/\(^\"\|\"$\)//g")"
 		case "$tag" in
 			"A") aurinstall "$program" "$comment" ;;
 			"G") gitmakeinstall "$program" "$comment" ;;
@@ -160,7 +160,7 @@ putgitrepo() { # Downloads a gitrepo $1 and places the files in $2 only overwrit
 	dir=$(mktemp -d)
 	[ ! -d "$2" ] && mkdir -p "$2"
 	chown -R "$name":wheel "$dir" "$2"
-	sudo -u "$name" git clone --recurse-submodules -b "$branch" "$1" "$dir" >/dev/null 2>&1
+	sudo -u "$name" git clone --recurse-submodules -b "$branch" "$1" "$dir" &> /dev/null
 	sudo -u "$name" cp -rfT "$dir" "$2"
 }
 
@@ -213,7 +213,7 @@ manualinstall $helper || error "Failed to install AUR helper."
 installationloop
 
 echo "Finally, installing \`libxft-bgra\` to enable color emoji in suckless software without crashes."
-#yes | sudo -u "$name" $helper -S libxft-bgra >/dev/null 2>&1
+#yes | sudo -u "$name" $helper -S libxft-bgra &> /dev/null
 
 #?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?
 git clone https://gitlab.freedesktop.org/xorg/lib/libxft.git libxft &>/dev/null
@@ -221,7 +221,7 @@ cd libxft
 wget -qO- 'https://gitlab.freedesktop.org/xorg/lib/libxft/merge_requests/1.patch' | patch -p1
 ./autogen.sh &>/dev/null
 ./configure --prefix=/usr --sysconfdir=/etc --disable-static &>/dev/null
-make >/dev/null 2>&1
+make &> /dev/null
 make install &>/dev/null
 cd /tmp
 #?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?
@@ -229,12 +229,14 @@ cd /tmp
 putgitrepo "$dotfiles" "/home/$name" "$repobranch"
 
 additional
-rm -rf "/home/$user/.git" "/home/$name/README.md" "/home/$name/LICENSE"
+rm -rf "/home/$name/.git" \
+	"/home/$name/README.md" \
+	"/home/$name/LICENSE"
 
 systembeepoff
 
 # Make zsh the default shell for the user.
-chsh -s /bin/zsh $name >/dev/null 2>&1
+chsh -s /bin/zsh "$name" &> /dev/null
 sudo -u "$name" mkdir -p "/home/$name/.cache/zsh/"
 
 # dbus UUID must be generated for Artix runit.
