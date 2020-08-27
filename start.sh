@@ -23,8 +23,8 @@ installpkg() { pacman --noconfirm --needed -S "$1" &>/dev/null; }
 error() { clear; printf "ERROR:\\n%s\\n" "$1"; exit; }
 
 welcomemsg() {
-	read -p "Welcome to installation script" -r
-	read -p "Continue? y/N" -n 1 -r
+	read -rp "Welcome to installation script"
+	read -rp "Continue? y/N" -n 1
 	echo
 	if [[ ! $REPLY =~ ^[Yy]$ ]]
 	then
@@ -34,24 +34,24 @@ welcomemsg() {
 
 getuserandpass() {
 	name=''
-	read -p "Account name: " name -r
+	read -rp "Account name: " name
 	while ! echo "$name" | grep "^[a-z_][a-z0-9_-]*$" &> /dev/null; do
-		read -p "Not valid username: " name -r
+		read -rp "Not valid username: " name
 	done
 	pass1=''; pass2=''
-	read -p "Password:" -s pass1 -r; echo
-	read -p "Retype:" -s pass2 -r; echo
+	read -rp "Password:" -s pass1; echo
+	read -rp "Retype:" -s pass2; echo
 	while ! [ "$pass1" = "$pass2" ]; do
 		unset pass2
 		echo 'Passwords not match'
-		read -p "Password:" -s pass1 -r; echo
-		read -p "Retype:" -s pass2 -r; echo
+		read -rp "Password:" -s pass1; echo
+		read -rp "Retype:" -s pass2; echo
 	done
 }
 
 usercheck() {
 	! (id -u "$name" &>/dev/null) ||
-	{ read -p 'Warning! User exists in system. Continue?' -n 1 -r
+	{ read -rp 'Warning! User exists in system. Continue?' -n 1
 	echo
 	if [[ ! $REPLY =~ ^[Yy]$ ]]
 	then
@@ -61,7 +61,7 @@ usercheck() {
 }
 
 preinstallmsg() {
-	read -p "Start installation? y/N" -n 1 -r
+	read -rp "Start installation? y/N" -n 1
 	echo
 	if [[ ! $REPLY =~ ^[Yy]$ ]]
 	then
