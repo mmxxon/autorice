@@ -111,7 +111,7 @@ manualinstall() {
 }
 
 maininstall() {
-	echo "Installing \`$1\` ($n of $total). $1 $2"
+	echo "[$n/$total] \`$1\` $2"
 	installpkg "$1"
 }
 
@@ -152,33 +152,6 @@ installationloop() { \
 			*) maininstall "$program" "$comment" ;;
 		esac
 	done < /tmp/progs.csv ;
-}
-
-putgitrepo() { # Downloads a gitrepo $1 and places the files in $2 only overwriting conflicts
-	echo "Downloading and installing config files..."
-	[ -z "$3" ] && branch="master" || branch="$repobranch"
-	dir=$(mktemp -d)
-	[ ! -d "$2" ] && mkdir -p "$2"
-	chown -R "$name":wheel "$dir" "$2"
-	sudo -u "$name" git clone --recurse-submodules -b "$branch" "$1" "$dir" &> /dev/null
-	sudo -u "$name" cp -rfT "$dir" "$2"
-}
-
-additional() {
-	sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/pics/walls"
-	sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/pics/icons"
-	mv /home/xon/.local/bin/additional/statusbar.hook /usr/share/libalpm/hooks/statusbar.hook
-	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/pacwall.sh -O /usr/bin/pacwall &> /dev/null
-	sed -i "s/\/home\/xon/\/home\/$name/" /usr/bin/pacwall
-	chmod +x /usr/bin/pacwall
-	wget https://raw.githubusercontent.com/xon-dev/pacwall/master/90-pacwall.hook -O /usr/share/libalpm/hooks/90-pacwall.hook &> /dev/null
-	sed -i "s/\/home\/xon/\/home\/$name/" /usr/share/libalpm/hooks/90-pacwall.hook
-}
-
-systembeepoff() {
-	echo "Getting rid of that retarded error beep sound..."
-	rmmod pcspkr
-	echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf ;
 }
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
@@ -226,14 +199,22 @@ make install &>/dev/null
 cd /tmp
 #?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?
 
-putgitrepo "$dotfiles" "/home/$name" "$repobranch"
+# Putgitrepo
+echo "Downloading and installing config files..."
+dir=$(mktemp -d)
+[ ! -d "/home/$name" ] && mkdir -p "/home/$name"
+chown -R "$name":wheel "$dir" "$dotfiles"
+sudo -u "$name" git clone --recurse-submodules -b "$repobranch" "$dotfiles" "$dir" &> /dev/null
+sudo -u "$name" cp -rfT "$dir" "$dotfiles"
 
-additional
-rm -rf "/home/$name/.git" \
-	"/home/$name/README.md" \
-	"/home/$name/LICENSE"
+# Additional
+sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/pics/walls"
+sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/pics/icons"
 
-systembeepoff
+# System beep off
+echo "Getting rid of that retarded error beep sound..."
+rmmod pcspkr
+echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf ;
 
 # Make zsh the default shell for the user.
 chsh -s /bin/zsh "$name" &> /dev/null
