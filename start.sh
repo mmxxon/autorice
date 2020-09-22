@@ -100,7 +100,7 @@ newperms() {
 
 manualinstall() {
 	[ -f "/usr/bin/$1" ] || (
-	echo "Installing \"$1\", an AUR helper..."
+	echo "Installing \"$1\""
 	cd /tmp || exit
 	rm -rf /tmp/"$1"*
 	curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
@@ -111,14 +111,14 @@ manualinstall() {
 }
 
 maininstall() {
-	echo "[$n/$total] \`$1\` $2"
+	echo "[$n/$total] \`$1\` | \'pacman\'"
 	installpkg "$1"
 }
 
 gitmakeinstall() {
 	progname="$(basename "$1" .git)"
 	dir="$repodir/$progname"
-	echo "Installing \`$progname\` ($n of $total) via \`git\` and \`make\`. $(basename "$1") $2"
+	echo "[$n/$total] \`$progname\` | \`git\` + \`make\`"
 	sudo -u "$name" git clone --depth 1 "$1" "$dir" &> /dev/null || { cd "$dir" || return ; sudo -u "$name" git pull --force origin master;}
 	cd "$dir" || exit
 	make &> /dev/null
@@ -127,13 +127,13 @@ gitmakeinstall() {
 }
 
 aurinstall() { \
-	echo "Installing \`$1\` ($n of $total) from the AUR. $1 $2"
+	echo "[$n/$total] \`$1\` | \'AUR\'"
 	echo "$aurinstalled" | grep "^$1$" &> /dev/null && return
 	sudo -u "$name" $helper -S --noconfirm "$1" &> /dev/null
 }
 
 pipinstall() { \
-	echo "Installing the Python package \`$1\` ($n of $total). $1 $2"
+	echo "[$n/$total] \`$1\` | \'pip\'"
 	command -v pip || installpkg python-pip &> /dev/null
 	yes | pip install "$1"
 }
