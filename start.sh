@@ -1,20 +1,10 @@
 #!/bin/bash
 
-while getopts ":h:d:b:c:a" o; do case "${o}" in
-	h) printf "[-d dotfiles ] [-c csv ] [-a AUR helper ] [ -h this message ] \\n" && exit ;;
-	d) dotfiles=${OPTARG} && git ls-remote "$dotfiles" || exit ;;
-	b) branch=${OPTARG} ;;
-	c) csv=${OPTARG} ;;
-	a) helper=${OPTARG} ;;
-	*) printf "Invalid option: -%s\\n" "$OPTARG" && exit ;;
-esac done
-
 # Prepare variables
-[ -z "$dotfiles" ] && dotfiles="https://github.com/xon-dev/rice.git"
-[ -z "$csv" ] && csv="https://raw.githubusercontent.com/xon-dev/autorice/test/apps.csv"
-[ -z "$helper" ] && helper="yay"
-[ -z "$repobranch" ] && repobranch="master"
-
+dotfiles="https://github.com/xon-personal/rice.git"
+csv="https://raw.githubusercontent.com/xon-personal/autorice/master/apps.csv"
+helper="yay"
+repobranch="master"
 distro="arch"
 grepseq="\"^[PGA]*,\""
 
@@ -126,20 +116,20 @@ gitmakeinstall() {
 	cd /tmp || return ;
 }
 
-aurinstall() { \
+aurinstall() {
 	echo "[$n/$total] \`$1\` | \'AUR\'"
 	echo "$aurinstalled" | grep "^$1$" &> /dev/null && return
 	sudo -u "$name" $helper -S --noconfirm "$1" &> /dev/null
 }
 
-pipinstall() { \
+pipinstall() {
 	echo "[$n/$total] \`$1\` | \'pip\'"
 	command -v pip || installpkg python-pip &> /dev/null
 	yes | pip install "$1"
 }
 
-installationloop() { \
-	([ -f "$csv" ] && cp "$csv" /tmp/progs.csv) || curl -Ls "$csv" | sed '/^#/d' | eval grep "$grepseq" > /tmp/progs.csv
+installationloop() {
+	curl -Ls "$csv" | sed '/^#/d' | eval grep "$grepseq" > /tmp/progs.csv
 	total=$(wc -l < /tmp/progs.csv)
 	aurinstalled=$(pacman -Qqm)
 	while IFS=, read -r tag program comment; do
@@ -167,9 +157,6 @@ installpkg curl   || error "Exited on curl"
 installpkg base-devel   || error "Exited on base-devel"
 installpkg git   || error "Exited on git"
 installpkg ntp   || error "Exited on ntp"
-
-echo "Synchronizing system time to ensure successful and secure installation of software..."
-ntpdate 0.us.pool.ntp.org &>/dev/null 
 
 [ -f /etc/sudoers.pacnew ] && cp /etc/sudoers.pacnew /etc/sudoers
 newperms "%wheel ALL=(ALL) NOPASSWD: ALL"
