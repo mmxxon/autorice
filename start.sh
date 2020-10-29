@@ -190,9 +190,9 @@ cd /tmp
 echo "Downloading and installing config files..."
 dir=$(mktemp -d)
 [ ! -d "/home/$name" ] && mkdir -p "/home/$name"
-chown -R "$name":wheel "$dir" "$dotfiles"
+chown -R "$name":wheel "$dir"
 sudo -u "$name" git clone --recurse-submodules -b "$repobranch" "$dotfiles" "$dir" &> /dev/null
-sudo -u "$name" cp -rfT "$dir" "$dotfiles"
+sudo -u "$name" cp -rfT "$dir" "/home/$name"
 
 # Additional
 sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/pics/walls"
