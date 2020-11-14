@@ -13,8 +13,7 @@ installpkg() { pacman --noconfirm --needed -S "$1" &>/dev/null; }
 error() { clear; printf "ERROR:\\n%s\\n" "$1"; exit; }
 
 welcomemsg() {
-	read -rp "Welcome to installation script"
-	read -rp "Continue? y/N" -n 1
+	read -rp "Welcome to installation script. Continue? y/N" -n 1
 	echo
 	if [[ ! $REPLY =~ ^[Yy]$ ]]
 	then
@@ -174,18 +173,7 @@ manualinstall $helper || error "Failed to install AUR helper."
 installationloop
 
 echo "Finally, installing \`libxft-bgra\` to enable color emoji in suckless software without crashes."
-#yes | sudo -u "$name" $helper -S libxft-bgra &> /dev/null
-
-#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?
-git clone https://gitlab.freedesktop.org/xorg/lib/libxft.git libxft &>/dev/null
-cd libxft
-wget -qO- 'https://gitlab.freedesktop.org/xorg/lib/libxft/merge_requests/1.patch' | patch -p1
-./autogen.sh &>/dev/null
-./configure --prefix=/usr --sysconfdir=/etc --disable-static &>/dev/null
-make &> /dev/null
-make install &>/dev/null
-cd /tmp
-#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?#?
+yes | sudo -u "$name" $helper -S libxft-bgra &> /dev/null
 
 # Putgitrepo
 echo "Downloading and installing config files..."
@@ -222,3 +210,13 @@ killall pulseaudio; sudo -u "$name" pulseaudio --start
 # Last message! Install complete!
 echo "Congrats! Installation successfull"
 clear
+
+# If libxft-bgra is fucked up
+# git clone https://gitlab.freedesktop.org/xorg/lib/libxft.git libxft &>/dev/null
+# cd libxft
+# wget -qO- 'https://gitlab.freedesktop.org/xorg/lib/libxft/merge_requests/1.patch' | patch -p1
+# ./autogen.sh &>/dev/null
+# ./configure --prefix=/usr --sysconfdir=/etc --disable-static &>/dev/null
+# make &> /dev/null
+# make install &>/dev/null
+# cd /tmp
