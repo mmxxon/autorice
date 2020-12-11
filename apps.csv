@@ -3,9 +3,7 @@
 ,xorg-xwininfo,allows querying information about windows.
 ,xorg-xinit,starts the graphical server.
 ,xorg-xinput,is input settings
-V,xorg-fonts,is a font package.
-V,xdg-utils,are filetype utilities.
-,amd-ucode,is
+V,xorg-fonts,is a font package.  V,xdg-utils,are filetype utilities.  ,amd-ucode,is
 ,nvidia,is a nvidia
 ,i3-gaps,is the main graphical user interface and window manager.
 ,ttf-linux-libertine,provides the sans and serif fonts for LARBS.
@@ -28,11 +26,8 @@ V,dbus,facilitates inter-process communication.
 ,mpd,is a lightweight music daemon.
 ,mpc,is a terminal interface for mpd.
 ,mpv,is the patrician's choice video player.
-,man-db,lets you read man pages of programs.
-,ncmpcpp,a ncurses powerful interface for mpd
-,firefox,is browser
-A,librefox-cfg,is firefox privacy config
-,noto-fonts-emoji,is an emoji font.
+,man-db,lets you read man pages of programs.  ,ncmpcpp,a ncurses powerful interface for mpd ,brave-bin,is browser ,noto-fonts-emoji,is an emoji font.
+,man-pages,"is"
 V,font-symbola,provides unicode and emoji symbols.
 ,ntfs-3g,allows accessing NTFS partitions.
 ,pulseaudio-alsa,is the audio system.
@@ -97,7 +92,7 @@ A,epy-git,"is book reading software."
 A,xtitle,"gets window title"
 A,equilux-theme,"is gtk theme"
 ,pcmanfm-gtk3,"is file manager"
-A,xkb-switch,"is"
+A,xkb-switch-i3,"is"
 A,xkblayout-state-git,"is"
 ,brightnessctl,"is brightness cli used in my build"
 ,github-cli,"is new github cli with completion"
@@ -106,7 +101,8 @@ A,mpdris2,"is"
 A,spotify,"is music service"
 ,rustup,"is programming language"
 ,cronie,"is task manager"
-,libinput-gestures,"is"
+A,libinput-gestures,"is"
 A,i3lock-color-git,"locker"
 G,https://github.com/xon-personal/i3lock-fancy,"is"
 ,seahorse,"is"
+,picom,"is"
