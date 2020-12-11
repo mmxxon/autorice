@@ -3,7 +3,8 @@
 ,xorg-xwininfo,allows querying information about windows.
 ,xorg-xinit,starts the graphical server.
 ,xorg-xinput,is input settings
-V,xorg-fonts,is a font package.  V,xdg-utils,are filetype utilities.  ,amd-ucode,is
+V,xorg-fonts,is a font package.
+V,xdg-utils,are filetype utilities.  ,amd-ucode,is
 ,nvidia,is a nvidia
 ,i3-gaps,is the main graphical user interface and window manager.
 ,ttf-linux-libertine,provides the sans and serif fonts for LARBS.
@@ -26,7 +27,10 @@ V,dbus,facilitates inter-process communication.
 ,mpd,is a lightweight music daemon.
 ,mpc,is a terminal interface for mpd.
 ,mpv,is the patrician's choice video player.
-,man-db,lets you read man pages of programs.  ,ncmpcpp,a ncurses powerful interface for mpd ,brave-bin,is browser ,noto-fonts-emoji,is an emoji font.
+,man-db,lets you read man pages of programs. 
+,ncmpcpp,a ncurses powerful interface for mpd 
+,brave-bin,is browser
+,noto-fonts-emoji,is an emoji font.
 ,man-pages,"is"
 V,font-symbola,provides unicode and emoji symbols.
 ,ntfs-3g,allows accessing NTFS partitions.
