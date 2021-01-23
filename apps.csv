@@ -1,4 +1,5 @@
 #TAG,NAME IN REPO (or git url),PURPOSE (should be a verb phrase to sound right while installing)
+,linux-headers,"i"
 ,xorg-server,is the graphical server.
 ,xorg-xwininfo,allows querying information about windows.
 ,xorg-xinit,starts the graphical server.
@@ -6,6 +7,7 @@
 V,xorg-fonts,is a font package.
 V,xdg-utils,are filetype utilities.  ,amd-ucode,is
 ,nvidia,is a nvidia
+,nvidia-dkms,is a nvidia
 ,i3-gaps,is the main graphical user interface and window manager.
 ,ttf-linux-libertine,provides the sans and serif fonts for LARBS.
 A,lf-git,is an extensive terminal file manager that everyone likes.
@@ -110,3 +112,4 @@ A,i3lock-color-git,"locker"
 G,https://github.com/xon-personal/i3lock-fancy,"is"
 ,seahorse,"is"
 ,picom-ibhagwan-git,"is"
+,udiskie,
