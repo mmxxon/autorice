@@ -90,7 +90,7 @@ A,prezto-git,"is a good zsh config."
 ,transmission-cli,"is transmission cli tools."
 A,tremc-git,"is transmission interface."
 A,deemix-pyweb-git,"is music testing software."
-A,kotatogram-desktop-bin,"is telegram client."
+,telegram-desktop,"is telegram client."
 A,hsetroot,"is tool to change default grey bg."
 A,epy-git,"is book reading software."
 ,xdg-user-dirs,"is tool that used to handle default user directories."
@@ -113,3 +113,5 @@ G,https://github.com/xon-personal/i3lock-fancy,"is"
 ,seahorse,"is"
 ,picom-ibhagwan-git,"is"
 ,udiskie,
+,xss-lock,
+A,waterfox-current-bin,
