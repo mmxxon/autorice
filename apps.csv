@@ -10,7 +10,7 @@ V,xdg-utils,are filetype utilities.  ,amd-ucode,is
 ,nvidia-dkms,is a nvidia
 ,i3-gaps,is the main graphical user interface and window manager.
 ,ttf-linux-libertine,provides the sans and serif fonts for LARBS.
-A,lf-git,is an extensive terminal file manager that everyone likes.
+A,lf-bin,is an extensive terminal file manager that everyone likes.
 ,arandr,is a UI for screen adjustment.
 ,bc,is used for a dropdown calculator.
 ,calcurse,is a lightweight terminal-based calendar.
@@ -70,8 +70,8 @@ V,setxkbmap,allows LARBS's unique keyboard bindings.
 V,xmodmap,allows LARBS's unique keyboard bindings.
 V,xsetroot,sets status bar and other X properies.
 V,xset,allows speeding up the X rate.
-G,https://github.com/xon-dev/dmenu.git,runs commands and provides a UI for selection.
-G,https://github.com/xon-dev/st.git,is my custom build of suckless's terminal emulator.
+G,https://github.com/xon-personal/dmenu.git,runs commands and provides a UI for selection.
+G,https://github.com/xon-personal/st.git,is my custom build of suckless's terminal emulator.
 A,mutt-wizard-git,is a light-weight terminal-based email system.
 ,slock,"allows you to lock your computer, and quickly unlock with your password."
 
@@ -109,9 +109,10 @@ A,spotify,"is music service"
 ,cronie,"is task manager"
 A,libinput-gestures,"is"
 A,i3lock-color-git,"locker"
-G,https://github.com/xon-personal/i3lock-fancy,"is"
+G,https://github.com/meskarune/i3lock-fancy,"is"
 ,seahorse,"is"
-,picom-ibhagwan-git,"is"
+,picom,
 ,udiskie,
 ,xss-lock,
-A,waterfox-current-bin,
+A,firefox,
+A,interrofont,"font info"

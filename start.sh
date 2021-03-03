@@ -90,7 +90,7 @@ newperms() {
 
 manualinstall() {
 	[ -f "/usr/bin/$1" ] || (
-	echo "Installing \"$1\""
+	echo "Installing $1"
 	cd /tmp || exit
 	rm -rf /tmp/"$1"*
 	curl -sO https://aur.archlinux.org/cgit/aur.git/snapshot/"$1".tar.gz &&
@@ -101,14 +101,14 @@ manualinstall() {
 }
 
 maininstall() {
-	echo "[$n/$total] \`$1\` | \'pacman\'"
+	echo "[$n/$total] $1 | pacman"
 	installpkg "$1"
 }
 
 gitmakeinstall() {
 	progname="$(basename "$1" .git)"
 	dir="$repodir/$progname"
-	echo "[$n/$total] \`$progname\` | \`git\` + \`make\`"
+	echo "[$n/$total] $progname | git + make"
 	sudo -u "$name" git clone --depth 1 "$1" "$dir" &> /dev/null || { cd "$dir" || return ; sudo -u "$name" git pull --force origin master;}
 	cd "$dir" || exit
 	make &> /dev/null
@@ -117,13 +117,13 @@ gitmakeinstall() {
 }
 
 aurinstall() {
-	echo "[$n/$total] \`$1\` | \'AUR\'"
+	echo "[$n/$total] '$1' | AUR"
 	echo "$aurinstalled" | grep "^$1$" &> /dev/null && return
 	sudo -u "$name" $helper -S --noconfirm "$1" &> /dev/null
 }
 
 pipinstall() {
-	echo "[$n/$total] \`$1\` | \'pip\'"
+	echo "[$n/$total] '$1' | pip"
 	command -v pip || installpkg python-pip &> /dev/null
 	yes | pip install "$1"
 }
@@ -160,64 +160,35 @@ installpkg ntp   || error "Exited on ntp"
 
 [ -f /etc/sudoers.pacnew ] && cp /etc/sudoers.pacnew /etc/sudoers
 newperms "%wheel ALL=(ALL) NOPASSWD: ALL"
-
-# Make pacman and yay colorful and adds eye candy on the progress bar because why not.
+# Make yay colorful + eye candy.
 grep "^Color" /etc/pacman.conf >/dev/null || sed -i "s/^#Color$/Color/" /etc/pacman.conf
 grep "ILoveCandy" /etc/pacman.conf >/dev/null || sed -i "/#VerbosePkgLists/a ILoveCandy" /etc/pacman.conf
-
 # Use all cores for compilation.
 sed -i "s/-j2/-j$(nproc)/;s/^#MAKEFLAGS/MAKEFLAGS/" /etc/makepkg.conf
-
 manualinstall $helper || error "Failed to install AUR helper."
-
 installationloop
-
 echo "Finally, installing \`libxft-bgra\` to enable color emoji in suckless software without crashes."
 yes | sudo -u "$name" $helper -S libxft-bgra &> /dev/null
-
-# Putgitrepo
 echo "Downloading and installing config files..."
 dir=$(mktemp -d)
 [ ! -d "/home/$name" ] && mkdir -p "/home/$name"
 chown -R "$name":wheel "$dir"
 sudo -u "$name" git clone --recurse-submodules -b "$repobranch" "$dotfiles" "$dir" &> /dev/null
 sudo -u "$name" cp -rfT "$dir" "/home/$name"
-
 # Additional
 sudo -u "$name" mv "/home/$name/.config/wallpapers" "/home/$name/pics/walls"
 sudo -u "$name" mv "/home/$name/.config/icons" "/home/$name/pics/icons"
-
 # System beep off
-echo "Getting rid of that retarded error beep sound..."
 rmmod pcspkr
 echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf ;
-
 # Make zsh the default shell for the user.
 chsh -s /bin/zsh "$name" &> /dev/null
 sudo -u "$name" mkdir -p "/home/$name/.cache/zsh/"
-
-# dbus UUID must be generated for Artix runit.
 dbus-uuidgen > /var/lib/dbus/machine-id
-
-# Start/restart PulseAudio.
 killall pulseaudio; sudo -u "$name" pulseaudio --start
-
-# This line, overwriting the `newperms` command above will allow the user to run
-# serveral important commands, `shutdown`, `reboot`, updating, etc. without a password.
 [ "$distro" = arch ] && newperms "%wheel ALL=(ALL) ALL #XON
 %wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/systemctl suspend,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/systemctl restart NetworkManager,/usr/bin/rc-service NetworkManager restart,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/yay,/usr/bin/pacman -Syyuw --noconfirm #XON
 Defaults env_editor,editor=/usr/bin/nvim:/usr/bin/vim:/usr/bin/nano:/usr/bin/vi"
 
-# Last message! Install complete!
 echo "Congrats! Installation successfull"
 clear
-
-# If libxft-bgra is fucked up
-# git clone https://gitlab.freedesktop.org/xorg/lib/libxft.git libxft &>/dev/null
-# cd libxft
-# wget -qO- 'https://gitlab.freedesktop.org/xorg/lib/libxft/merge_requests/1.patch' | patch -p1
-# ./autogen.sh &>/dev/null
-# ./configure --prefix=/usr --sysconfdir=/etc --disable-static &>/dev/null
-# make &> /dev/null
-# make install &>/dev/null
-# cd /tmp
