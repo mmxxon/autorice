@@ -104,7 +104,7 @@ A,xkblayout-state-git,"is"
 ,github-cli,"is new github cli with completion"
 A,mpdris2,"is"
 ,playerctl,"is"
-A,spotify,"is music service"
+A,spotify-adblock-git,"is music service"
 ,rustup,"is programming language"
 ,cronie,"is task manager"
 A,libinput-gestures,"is"
@@ -116,3 +116,4 @@ G,https://github.com/meskarune/i3lock-fancy,"is"
 ,xss-lock,
 A,firefox,
 A,interrofont,"font info"
+A,xcwd-git,
