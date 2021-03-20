@@ -4,8 +4,10 @@
 ,xorg-xwininfo,allows querying information about windows.
 ,xorg-xinit,starts the graphical server.
 ,xorg-xinput,is input settings
+,xorg-xkill,
 V,xorg-fonts,is a font package.
-V,xdg-utils,are filetype utilities.  ,amd-ucode,is
+V,xdg-utils,are filetype utilities.
+,amd-ucode,is
 ,nvidia,is a nvidia
 ,nvidia-dkms,is a nvidia
 ,i3-gaps,is the main graphical user interface and window manager.
@@ -31,8 +33,8 @@ V,dbus,facilitates inter-process communication.
 ,mpv,is the patrician's choice video player.
 ,man-db,lets you read man pages of programs. 
 ,ncmpcpp,a ncurses powerful interface for mpd 
-,brave-bin,is browser
 ,noto-fonts-emoji,is an emoji font.
+A,firefox,
 ,man-pages,"is"
 V,font-symbola,provides unicode and emoji symbols.
 ,ntfs-3g,allows accessing NTFS partitions.
@@ -48,8 +50,6 @@ A,sc-im,is an Excel-like terminal spreadsheet manager.
 V,unclutter-xfixes,hides an inactive mouse.
 ,unrar,extracts rar's.
 ,unzip,unzips zips.
-,lynx,is a terminal browser.
-,xcape,gives the special escape/super mappings of LARBS.
 ,xclip,allows for copying and pasting from the command line.
 ,xdotool,provides window action utilities on the command line.
 ,xorg-xdpyinfo,aids with resolution determination and screen recording.
@@ -66,15 +66,13 @@ V,xdpyinfo,aids with resolution determination and screen recording.
 A,zsh-fast-syntax-highlighting,provides syntax highlighting in the shell.
 A,task-spooler,queues commands or files for download.
 V,ts,queues commands or files for download.
-V,setxkbmap,allows LARBS's unique keyboard bindings.
-V,xmodmap,allows LARBS's unique keyboard bindings.
+V,setxkbmap,keyboard bindings.
+V,xmodmap,keyboard bindings.
 V,xsetroot,sets status bar and other X properies.
 V,xset,allows speeding up the X rate.
 G,https://github.com/xon-personal/dmenu.git,runs commands and provides a UI for selection.
 G,https://github.com/xon-personal/st.git,is my custom build of suckless's terminal emulator.
 A,mutt-wizard-git,is a light-weight terminal-based email system.
-,slock,"allows you to lock your computer, and quickly unlock with your password."
-
 A,pacman-contrib,"is utils for pacman."
 A,xorg-util-macros,"is utils for autogen."
 ,cmake,"is software for building C apps."
@@ -114,6 +112,5 @@ G,https://github.com/meskarune/i3lock-fancy,"is"
 ,picom,
 ,udiskie,
 ,xss-lock,
-A,firefox,
 A,interrofont,"font info"
 A,xcwd-git,
